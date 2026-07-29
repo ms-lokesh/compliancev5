@@ -1,0 +1,4 @@
+[
+    {"user": "alice", "mfa_active": true, "access_key_age_days": 15},
+    {"user": "service_account_1", "mfa_active": false, "access_key_age_days": 120}
+]

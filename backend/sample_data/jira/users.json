@@ -1,0 +1,4 @@
+[
+    {"username": "admin", "active": true},
+    {"username": "ex_employee", "active": false}
+]

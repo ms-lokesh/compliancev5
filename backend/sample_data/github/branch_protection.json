@@ -1,0 +1,4 @@
+[
+    {"repository": "core-backend", "branch": "main", "requires_approvals": true, "required_reviews": 2},
+    {"repository": "frontend-ui", "branch": "main", "requires_approvals": false, "required_reviews": 0}
+]

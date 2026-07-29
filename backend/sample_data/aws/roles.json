@@ -1,0 +1,4 @@
+[
+    {"role_name": "AdminRole", "has_full_access": true},
+    {"role_name": "ReadOnlyRole", "has_full_access": false}
+]

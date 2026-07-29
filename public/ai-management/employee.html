@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Employee View — AI Management System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link rel="stylesheet" href="css/style.css?v=2.1">
+</head>
+<body class="min-h-screen">
+
+<div class="app-wrapper">
+  
+  <!-- ============================== TOP NAVIGATION HEADER ============================== -->
+  <header class="sticky top-0 z-50 bg-white border-b border-slate-200 shadow-xs">
+    <!-- Level 1: Main Section Switcher -->
+    <div class="flex items-center justify-between px-8 py-3.5 border-b border-slate-100 bg-slate-50/50">
+      <div class="flex items-center gap-3">
+        <a href="index.html?cat=overview" class="module-tab-link">
+          <i class="fa-solid fa-chart-pie text-xs"></i>
+          <span>Operations Hub</span>
+        </a>
+        <a href="resource-management.html?tab=agents" class="module-tab-link">
+          <i class="fa-solid fa-cubes text-xs"></i>
+          <span>Resource Management</span>
+        </a>
+        <a href="employee.html" class="module-tab-link active">
+          <i class="fa-solid fa-user-tie text-xs"></i>
+          <span>Employee Portal</span>
+        </a>
+      </div>
+      <div class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider hidden sm:block">
+        AI Management System
+      </div>
+    </div>
+
+    <!-- Level 2: Segmented Sub-Nav Pill Controls -->
+    <div class="px-8 py-3 bg-white">
+      <div class="pill-nav-container">
+        <a href="employee.html" class="side-link sub-pill-tab active" id="link-employee-portal" data-nav="employee-portal">
+          <i class="fa-solid fa-user-tie text-xs"></i>
+          <span>Employee Portal</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ============================== MAIN CONTENT WRAPPER ============================== -->
+  <div class="main-content">
+    
+    <!-- Top Nav Header -->
+    <header class="top-bar">
+      <div class="flex items-center gap-2">
+        <span class="text-xs font-medium text-slate-400">Self Service</span>
+        <span class="text-xs text-slate-300">/</span>
+        <span class="text-xs font-semibold text-slate-800">Employee Portal</span>
+      </div>
+      
+      <!-- Employee selector placed in top bar -->
+      <div class="flex items-center gap-2">
+        <label for="employee-selector" class="text-xs font-medium text-slate-500">Impersonate Employee:</label>
+        <select id="employee-selector" class="text-xs py-1"></select>
+      </div>
+    </header>
+
+    <div class="content-pane space-y-6">
+      
+      <!-- ============================== 1. MY AI SUMMARY ============================== -->
+      <section id="my-ai-summary" class="glass-panel p-5">
+        <div class="flex items-center justify-between flex-wrap gap-4">
+          <div class="flex items-center gap-4">
+            <div class="w-14 h-14 rounded-full bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center text-lg font-bold text-white" id="emp-avatar">--</div>
+            <div>
+              <h2 class="text-lg font-bold text-slate-800" id="emp-name">—</h2>
+              <p class="text-xs text-slate-500"><span id="emp-department">—</span> · Manager: <span id="emp-manager">—</span></p>
+            </div>
+          </div>
+          <div class="flex items-center gap-2 text-xs text-slate-500">
+            <i class="fa-solid fa-clock text-slate-400"></i> Resets in <span id="reset-timer" class="font-mono-num font-semibold text-slate-700">—</span>
+          </div>
+        </div>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mt-4" id="my-summary-kpis"></div>
+      </section>
+
+      <!-- ============================== 2. AI USAGE ============================== -->
+      <section id="ai-usage" class="glass-panel p-5">
+        <div class="flex items-center justify-between mb-3">
+          <h2 class="text-base font-bold text-slate-800">AI Usage Summary</h2>
+          <div class="flex gap-1" id="usage-period-tabs">
+            <button class="tab-btn active" data-period="today">Today</button>
+            <button class="tab-btn" data-period="week">Week</button>
+            <button class="tab-btn" data-period="month">Month</button>
+          </div>
+        </div>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-3" id="usage-kpis"></div>
+      </section>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- ============================== 3. MY AGENT USAGE ============================== -->
+        <section id="my-agents" class="glass-panel p-5">
+          <h2 class="text-base font-bold text-slate-800 mb-3">My Agent Usage</h2>
+          <div class="table-scroll" style="max-height:280px">
+            <table class="data-table"><thead><tr><th>Agent</th><th>Requests</th><th>Tokens</th><th>Cost</th><th>Last Used</th></tr></thead>
+            <tbody id="my-agents-body"></tbody></table>
+          </div>
+        </section>
+
+        <!-- ============================== 4. MY MODELS ============================== -->
+        <section id="my-models" class="glass-panel p-5">
+          <h2 class="text-base font-bold text-slate-800 mb-3">My Models</h2>
+          <div style="height:220px"><canvas id="my-models-chart"></canvas></div>
+        </section>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- ============================== 5. PROMPT ANALYTICS ============================== -->
+        <section id="prompt-analytics" class="glass-panel p-5">
+          <h2 class="text-base font-bold text-slate-800 mb-3">Prompt Analytics</h2>
+          <div class="grid grid-cols-2 gap-3" id="prompt-analytics-grid"></div>
+        </section>
+
+        <!-- ============================== 6. RESOURCE USAGE ============================== -->
+        <section id="resource-usage" class="glass-panel p-5">
+          <h2 class="text-base font-bold text-slate-800 mb-3">Resource Usage</h2>
+          <div class="grid grid-cols-2 gap-3" id="resource-usage-grid"></div>
+        </section>
+      </div>
+
+      <!-- ============================== 7. BUDGET ============================== -->
+      <section id="budget-section" class="glass-panel p-5">
+        <h2 class="text-base font-bold text-slate-800 mb-3">Budget Details</h2>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div>
+            <div class="grid grid-cols-2 gap-3 mb-3" id="budget-kpis"></div>
+            <div>
+              <div class="flex justify-between text-[11px] text-slate-500 mb-1"><span>Monthly Budget Usage</span><span id="budget-pct-label">0%</span></div>
+              <div class="progress-track" style="height:10px"><div class="progress-fill" id="budget-progress-bar" style="width:0%"></div></div>
+            </div>
+          </div>
+          <div style="height:220px"><canvas id="budget-trend-chart"></canvas></div>
+        </div>
+      </section>
+
+      <!-- ============================== 8. RECOMMENDATIONS ============================== -->
+      <section id="recommendations" class="glass-panel p-5">
+        <h2 class="text-base font-bold text-slate-800 mb-3">Recommendations</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3" id="recommendations-list"></div>
+      </section>
+
+
+      <!-- ============================== 10. ACTIVITY HISTORY ============================== -->
+      <section id="activity-history" class="glass-panel p-5">
+        <div class="flex items-center justify-between mb-3">
+          <h2 class="text-base font-bold text-slate-800">Activity History</h2>
+          <input type="text" id="history-search" placeholder="Search prompt ID, agent, model..." class="w-56">
+        </div>
+        <div class="table-scroll" style="max-height:340px">
+          <table class="data-table"><thead><tr>
+            <th>Timestamp</th><th>Prompt ID</th><th>Agent</th><th>Model</th><th>Tokens</th><th>Cost</th><th>Latency</th><th>Status</th>
+          </tr></thead>
+          <tbody id="activity-history-body"></tbody></table>
+        </div>
+      </section>
+
+      <footer class="text-center text-[11px] text-slate-500 py-6 border-t border-slate-200">
+        AI Management System · Employee Portal · Self-Service Dashboard
+      </footer>
+    </div>
+  </div>
+</div>
+
+<!-- ============================== MODAL: REQUEST FORM ============================== -->
+<div id="request-modal" class="modal-overlay hidden">
+  <div class="modal-panel p-6" id="request-modal-content" style="max-width:480px"></div>
+</div>
+
+<script src="js/api.js"></script>
+<script src="js/employee.js"></script>
+</body>
+</html>

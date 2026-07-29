@@ -1,0 +1,4 @@
+[
+    {"group_name": "web-sg", "allows_unrestricted_ssh": false},
+    {"group_name": "default", "allows_unrestricted_ssh": true}
+]

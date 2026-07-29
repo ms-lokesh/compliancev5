@@ -1,0 +1,4 @@
+[
+    {"username": "alice_dev", "role": "admin", "mfa_enabled": true},
+    {"username": "bob_contractor", "role": "push", "mfa_enabled": false}
+]

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Resource Management — AI Management System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="css/style.css?v=2.1">
+</head>
+<body class="min-h-screen">
+
+<div class="app-wrapper" id="page-tabs">
+  
+  <!-- ============================== TOP NAVIGATION HEADER ============================== -->
+  <header class="sticky top-0 z-50 bg-white border-b border-slate-200 shadow-xs">
+    <!-- Level 1: Main Section Switcher -->
+    <div class="flex items-center justify-between px-8 py-3.5 border-b border-slate-100 bg-slate-50/50">
+      <div class="flex items-center gap-3">
+        <a href="index.html?cat=overview" class="module-tab-link">
+          <i class="fa-solid fa-chart-pie text-xs"></i>
+          <span>Operations Hub</span>
+        </a>
+        <a href="resource-management.html?tab=agents" class="module-tab-link active">
+          <i class="fa-solid fa-cubes text-xs"></i>
+          <span>Resource Management</span>
+        </a>
+        <a href="employee.html" class="module-tab-link">
+          <i class="fa-solid fa-user-tie text-xs"></i>
+          <span>Employee Portal</span>
+        </a>
+      </div>
+      <div class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider hidden sm:block">
+        AI Management System
+      </div>
+    </div>
+
+    <!-- Level 2: Segmented Sub-Nav Pill Controls -->
+    <div class="px-8 py-3 bg-white">
+      <div class="pill-nav-container">
+        <a href="resource-management.html?tab=agents" class="side-link sub-pill-tab" id="link-tab-agents" data-nav="tab-agents">
+          <i class="fa-solid fa-robot text-xs"></i>
+          <span>Agent Inventory</span>
+        </a>
+        <a href="resource-management.html?tab=employees" class="side-link sub-pill-tab" id="link-tab-employees" data-nav="tab-employees">
+          <i class="fa-solid fa-users text-xs"></i>
+          <span>Employee Admin</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ============================== MAIN CONTENT WRAPPER ============================== -->
+  <div class="main-content">
+    
+    <!-- Top Nav Header -->
+    <header class="top-bar">
+      <div class="flex items-center gap-2">
+        <span class="text-xs font-medium text-slate-400">Resource Management</span>
+        <span class="text-xs text-slate-300">/</span>
+        <span id="breadcrumb-tab" class="text-xs font-semibold text-slate-800">Agent Inventory</span>
+      </div>
+      <div class="text-xs font-semibold text-slate-400">AI Management System</div>
+    </header>
+
+    <div class="content-pane space-y-6">
+      
+      <!-- ============================== TAB 1: AGENT INVENTORY ============================== -->
+      <section id="tab-agents" class="glass-panel p-4">
+        <div class="flex items-center justify-between mb-3 flex-wrap gap-2">
+          <div>
+            <h2 class="text-base font-bold text-slate-800">Agent Inventory</h2>
+          </div>
+          <div class="flex gap-2">
+            <input type="text" id="agent-search" placeholder="Search agent, owner, dept..." class="w-64">
+            <select id="agent-status-filter">
+              <option value="All">All Statuses</option>
+              <option>Healthy</option><option>Warning</option><option>Critical</option><option>Disabled</option><option>Experimental</option>
+            </select>
+          </div>
+        </div>
+        <div class="table-scroll">
+          <table class="data-table">
+            <thead><tr>
+              <th>Agent Name</th><th>Agent ID</th><th>Department</th><th>Owner</th><th>Status</th>
+              <th>Purpose</th><th>Environment</th><th>Created</th><th>Last Updated</th><th>Version</th>
+            </tr></thead>
+            <tbody id="agent-table-body"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ============================== TAB 2: EMPLOYEE MANAGEMENT ============================== -->
+      <section id="tab-employees" class="hidden space-y-4">
+        <div class="glass-panel p-4">
+          <div class="flex items-center justify-between mb-3 flex-wrap gap-2">
+            <div>
+              <h2 class="text-base font-bold text-slate-800">Employee Management</h2>
+            </div>
+            <div class="flex gap-2 flex-wrap">
+              <input type="text" id="emp-search" placeholder="Search employee, ID, manager..." class="w-56">
+              <select id="emp-dept-filter"><option value="All">All Departments</option></select>
+              <select id="emp-role-filter"><option value="All">All Roles</option></select>
+              <select id="emp-status-filter"><option value="All">All Statuses</option><option>Active</option><option>Near Limit</option><option>Exceeded</option><option>Suspended</option></select>
+            </div>
+          </div>
+
+          <div class="flex items-center justify-between mb-3 flex-wrap gap-2">
+            <p class="text-xs text-slate-505 font-medium" id="emp-selection-count">0 employees selected</p>
+            <div class="flex gap-2 flex-wrap" id="bulk-actions">
+              <button class="btn-ghost" data-action="allocate-tokens"><i class="fa-solid fa-coins mr-1 text-slate-500"></i>Allocate Tokens</button>
+              <button class="btn-ghost" data-action="increase-budget"><i class="fa-solid fa-arrow-up mr-1 text-slate-500"></i>Increase Budget</button>
+              <button class="btn-ghost" data-action="reduce-budget"><i class="fa-solid fa-arrow-down mr-1 text-slate-500"></i>Reduce Budget</button>
+              <button class="btn-ghost" data-action="assign-agents"><i class="fa-solid fa-robot mr-1 text-slate-500"></i>Assign Agents</button>
+              <button class="btn-ghost" data-action="restrict-models"><i class="fa-solid fa-ban mr-1 text-slate-500"></i>Restrict Models</button>
+              <button class="btn-ghost" data-action="suspend-access"><i class="fa-solid fa-lock mr-1 text-slate-500"></i>Suspend Access</button>
+              <button class="btn-primary" data-action="export-reports"><i class="fa-solid fa-file-export mr-1"></i>Export Reports</button>
+            </div>
+          </div>
+
+          <div class="table-scroll">
+            <table class="data-table">
+              <thead><tr>
+                <th><input type="checkbox" id="emp-select-all"></th>
+                <th>Employee</th><th>ID</th><th>Department</th><th>Manager</th><th>Role</th><th>Status</th>
+                <th>Alloc Daily Tok</th><th>Alloc Monthly Tok</th><th>Alloc Budget</th>
+                <th>Consumed Tok</th><th>Consumed Budget</th><th>Remaining Budget</th>
+                <th>Priority</th><th>Daily Reset</th><th>Budget Expiry</th><th>Approval</th>
+              </tr></thead>
+              <tbody id="employee-table-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <footer class="text-center text-[11px] text-slate-500 py-6 border-t border-slate-200">
+        AI Management System · Resource Management Panel · Enterprise Admin Scope
+      </footer>
+    </div>
+  </div>
+</div>
+
+<!-- ============================== MODAL: AGENT DEEP DIVE ============================== -->
+<div id="agent-modal" class="modal-overlay hidden">
+  <div class="modal-panel p-6" id="agent-modal-content"></div>
+</div>
+
+<!-- ============================== MODAL: BULK ACTION ============================== -->
+<div id="bulk-modal" class="modal-overlay hidden">
+  <div class="modal-panel p-6" id="bulk-modal-content" style="max-width:520px"></div>
+</div>
+
+<script src="js/api.js"></script>
+<script src="js/resource-management.js"></script>
+</body>
+</html>
