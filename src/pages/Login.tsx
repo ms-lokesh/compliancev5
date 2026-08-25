@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ShieldCheck, Lock, Mail, Key } from 'lucide-react';
+import SnsSquareLogo from '../components/SnsSquareLogo';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -25,8 +26,8 @@ const Login = () => {
     <div className="min-h-screen bg-[#0A111F] flex flex-col justify-center py-12 sm:px-6 lg:px-8 font-sans">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <div className="flex justify-center mb-6">
-          <div className="w-12 h-12 border-[2px] border-white rounded-[8px] flex items-center justify-center">
-            <div className="w-5 h-5 bg-blue-500 rounded-[4px]" />
+          <div className="bg-white px-10 py-5 rounded-xl border border-slate-800 shadow-md flex items-center justify-center">
+            <SnsSquareLogo className="h-20 w-auto" mode="light" />
           </div>
         </div>
         <h2 className="mt-2 text-center text-3xl font-bold tracking-tight text-white">
